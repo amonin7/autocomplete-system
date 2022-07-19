@@ -18,8 +18,8 @@ func (acs *AutocompleteSystem) AddWords(words ...string) {
 	}
 }
 
-func (acs *AutocompleteSystem) Autocomplete(query string) int {
-	suggestions := acs.trie.Autocomplete(query)
+func (acs *AutocompleteSystem) Autocomplete(query string, limit int) int {
+	suggestions := acs.trie.Autocomplete(query, limit)
 	if len(suggestions) == 0 {
 		println(-1)
 		return -1

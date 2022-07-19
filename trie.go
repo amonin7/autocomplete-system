@@ -24,7 +24,29 @@ func (tr *Trie) Insert(word string) {
 	curNode.word = word
 }
 
-//func (tr *Trie) Search(word string)
+func (tr *Trie) Search(word string) bool {
+	curNode := tr.root
+	for _, character := range word {
+		childNode, ok := curNode.childrenChars[character]
+		if !ok {
+			return false
+		}
+		curNode = childNode
+	}
+	return curNode.isEndingChar
+}
+
+func (tr *Trie) StartsWith(prefix string) bool {
+	curNode := tr.root
+	for _, character := range prefix {
+		childNode, ok := curNode.childrenChars[character]
+		if !ok {
+			return false
+		}
+		curNode = childNode
+	}
+	return true
+}
 
 func (tr *Trie) Autocomplete(query string, limit int) []string {
 	curNode := tr.root
@@ -38,15 +60,21 @@ func (tr *Trie) Autocomplete(query string, limit int) []string {
 	}
 
 	var result []string
-	autocompleteOneNode(*curNode, &result)
+	autocompleteOneNode(*curNode, &result, limit)
 	return result
 }
 
-func autocompleteOneNode(curNode TrieNode, result *[]string) {
+func autocompleteOneNode(curNode TrieNode, result *[]string, limit int) {
+	if limit != 0 && len(*result) == limit {
+		return
+	}
 	if curNode.isEndingChar {
 		*result = append(*result, curNode.word)
 	}
+	if limit != 0 && len(*result) == limit {
+		return
+	}
 	for _, child := range curNode.childrenChars {
-		autocompleteOneNode(*child, result)
+		autocompleteOneNode(*child, result, limit)
 	}
 }

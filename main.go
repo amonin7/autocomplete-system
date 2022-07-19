@@ -23,5 +23,5 @@ We use this flag in Trie to mark the end of word nodes for purpose of searching.
 func main() {
 	acs := SystemConstructor()
 	acs.AddWords("hello", "dog", "hell", "cat", "a", "hel", "help", "helps", "helping")
-	acs.Autocomplete("c")
+	acs.Autocomplete("c", 0)
 }
